@@ -110,7 +110,6 @@ public class SparkView extends SurfaceView implements SurfaceHolder.Callback, Ru
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getPointerCount()) {
-            // 单点触摸
             case 1:
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
@@ -147,7 +146,7 @@ public class SparkView extends SurfaceView implements SurfaceHolder.Callback, Ru
         isRun = false;
     }
 
-    private void drawBackgound(SurfaceHolder holder) {
+    private void drawBackground(SurfaceHolder holder) {
         mCanvas = mHolder.lockCanvas();
         mCanvas.drawColor(Color.parseColor("#00000000"));
         mHolder.unlockCanvasAndPost(mCanvas);

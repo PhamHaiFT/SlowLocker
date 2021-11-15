@@ -13,13 +13,14 @@ import java.io.InputStream;
 
 public class BitmapUtil {
 
-    private static final String TAG = "BitmapUtil";
     @Nullable
     public static Bitmap getBitmapFromUri(Context context, Uri selectedImage) {
         InputStream imageStream = null;
         try {
             imageStream = context.getContentResolver().openInputStream(selectedImage);
-            return BitmapFactory.decodeStream(imageStream,null,getBitmapOptions(0));
+            Bitmap bitmap = BitmapFactory.decodeStream(imageStream, null, getBitmapOptions(0));
+
+            return getResizedBitmap(bitmap, 720, 1280);
         } catch (FileNotFoundException e) {
         }
         return null;
@@ -45,7 +46,7 @@ public class BitmapUtil {
         return Bitmap.createScaledBitmap(bitmap, width, height, true);
     }
 
-    public static BitmapFactory.Options getBitmapOptions(int scale){
+    public static BitmapFactory.Options getBitmapOptions(int scale) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPurgeable = true;
         options.inInputShareable = true;

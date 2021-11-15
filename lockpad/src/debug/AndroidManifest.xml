@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lockpad.sslockscreen" >
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <application>
+        <activity
+            android:name="com.lockpad.sslockscreen.activities.TestActivity"
+            android:theme="@style/Theme.AppCompat.DayNight"/>
+    </application>
+</manifest>

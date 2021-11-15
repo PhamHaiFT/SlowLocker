@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LockerScreen.iml" filepath="$PROJECT_DIR$/.idea/modules/LockerScreen.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LockerScreen.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LockerScreen.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pflockscreen/LockerScreen.pflockscreen.iml" filepath="$PROJECT_DIR$/.idea/modules/pflockscreen/LockerScreen.pflockscreen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SlowLocker.iml" filepath="$PROJECT_DIR$/.idea/modules/SlowLocker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SlowLocker.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SlowLocker.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pflockscreen/SlowLocker.lockpad.iml" filepath="$PROJECT_DIR$/.idea/modules/pflockscreen/SlowLocker.lockpad.iml" />
     </modules>
   </component>
 </project>

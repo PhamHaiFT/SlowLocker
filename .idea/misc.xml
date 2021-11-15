@@ -29,6 +29,13 @@
         <entry key="..\:/Users/TS02666/Desktop/LockScreen/LockerScreen/pflockscreen/src/main/res/drawable/touch_selector_pf.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/TS02666/Desktop/LockScreen/LockerScreen/pflockscreen/src/main/res/layout/fragment_lock_screen_pf.xml" value="0.25" />
         <entry key="..\:/Users/TS02666/Desktop/LockScreen/LockerScreen/pflockscreen/src/main/res/layout/view_pf_fingerprint_dialog_container.xml" value="0.25" />
+        <entry key="..\:/Users/TS02666/Desktop/SlowLocker/app/src/main/res/drawable/bg_item_setting.xml" value="0.3828125" />
+        <entry key="..\:/Users/TS02666/Desktop/SlowLocker/app/src/main/res/drawable/common_sticker_header_bg_shape.xml" value="0.3828125" />
+        <entry key="..\:/Users/TS02666/Desktop/SlowLocker/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3828125" />
+        <entry key="..\:/Users/TS02666/Desktop/SlowLocker/app/src/main/res/layout/activity_locker.xml" value="0.35144927536231885" />
+        <entry key="..\:/Users/TS02666/Desktop/SlowLocker/app/src/main/res/layout/activity_main.xml" value="0.35144927536231885" />
+        <entry key="..\:/Users/TS02666/Desktop/SlowLocker/app/src/main/res/layout/activity_setting.xml" value="0.35144927536231885" />
+        <entry key="..\:/Users/TS02666/Desktop/SlowLocker/app/src/main/res/layout/touch_pull_down_view.xml" value="0.35144927536231885" />
       </map>
     </option>
   </component>

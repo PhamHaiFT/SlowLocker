@@ -45,5 +45,5 @@ dependencies {
     //Shimmer
     implementation 'com.romainpiel.shimmer:library:1.4.0@aar'
 
-    implementation project(':pflockscreen')
+    implementation project(':lockpad')
 }

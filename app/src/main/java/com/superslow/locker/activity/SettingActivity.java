@@ -22,12 +22,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
-import com.beautycoder.pflockscreen.PFFLockScreenConfiguration;
-import com.beautycoder.pflockscreen.fragments.CustomLockScreenFragment;
-import com.beautycoder.pflockscreen.security.PFResult;
-import com.beautycoder.pflockscreen.security.PFSecurityManager;
-import com.beautycoder.pflockscreen.security.callbacks.PFPinCodeHelperCallback;
-import com.beautycoder.pflockscreen.viewmodels.PFPinCodeViewModel;
+import com.lockpad.sslockscreen.LPFLockScreenConfiguration;
+import com.lockpad.sslockscreen.fragments.LockPadScreenFragment;
+import com.lockpad.sslockscreen.security.LPResult;
+import com.lockpad.sslockscreen.security.LPSecurityManager;
+import com.lockpad.sslockscreen.security.callbacks.LPPinCodeHelperCallback;
+import com.lockpad.sslockscreen.viewmodels.LPPinCodeViewModel;
 import com.superslow.locker.R;
 import com.superslow.locker.receiver.AdminReceiver;
 import com.superslow.locker.util.BitmapUtil;
@@ -222,9 +222,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void showLockScreenFragment() {
-        new PFPinCodeViewModel().isPinCodeEncryptionKeyExist().observe(this, new Observer<PFResult<Boolean>>() {
+        new LPPinCodeViewModel().isPinCodeEncryptionKeyExist().observe(this, new Observer<LPResult<Boolean>>() {
             @Override
-            public void onChanged(PFResult<Boolean> result) {
+            public void onChanged(LPResult<Boolean> result) {
                 if (result == null) {
                     return;
                 }
@@ -240,7 +240,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void showLockScreenFragment(Boolean isPinExist) {
-        final PFFLockScreenConfiguration.Builder builder = new PFFLockScreenConfiguration
+        final LPFLockScreenConfiguration.Builder builder = new LPFLockScreenConfiguration
                 .Builder(this)
                 .setTitle(isPinExist ? "Input code to disable" : "Create pin code")
                 .setCodeLength(4)
@@ -249,7 +249,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 .setNewCodeValidationTitle("Input code again")
                 .setUseFingerprint(false);
 
-        final CustomLockScreenFragment lockScreenFragment = new CustomLockScreenFragment();
+        final LockPadScreenFragment lockScreenFragment = new LockPadScreenFragment();
         lockScreenFragment.setOnLeftButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,7 +257,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 getSupportFragmentManager().beginTransaction().remove(lockScreenFragment).commit();
             }
         });
-        builder.setMode(isPinExist ? PFFLockScreenConfiguration.MODE_AUTH : PFFLockScreenConfiguration.MODE_CREATE);
+        builder.setMode(isPinExist ? LPFLockScreenConfiguration.MODE_AUTH : LPFLockScreenConfiguration.MODE_CREATE);
 
         if (isPinExist) {
             lockScreenFragment.setEncodedPinCode(PrefManager.getPassword(getApplicationContext()));
@@ -269,14 +269,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         getSupportFragmentManager().beginTransaction().replace(R.id.container, lockScreenFragment).commit();
     }
 
-    private CustomLockScreenFragment.OnPFLockScreenLoginListener loginListener(CustomLockScreenFragment fragment) {
-        CustomLockScreenFragment.OnPFLockScreenLoginListener loginListener = new CustomLockScreenFragment.OnPFLockScreenLoginListener() {
+    private LockPadScreenFragment.OnLPLockScreenLoginListener loginListener(LockPadScreenFragment fragment) {
+        LockPadScreenFragment.OnLPLockScreenLoginListener loginListener = new LockPadScreenFragment.OnLPLockScreenLoginListener() {
             @Override
             public void onCodeInputSuccessful() {
                 boolean currentPasswordState = PrefManager.getPasswordState(getApplicationContext());
-                PFSecurityManager.getInstance().getPinCodeHelper().delete(new PFPinCodeHelperCallback<Boolean>() {
+                LPSecurityManager.getInstance().getPinCodeHelper().delete(new LPPinCodeHelperCallback<Boolean>() {
                     @Override
-                    public void onResult(PFResult<Boolean> result) {
+                    public void onResult(LPResult<Boolean> result) {
                         Toast.makeText(getApplicationContext(), "Disable password", Toast.LENGTH_SHORT).show();
                         updateSwitchView(swPassword, false);
                         PrefManager.savePasswordState(getApplicationContext(), false);
@@ -304,8 +304,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         return loginListener;
     }
 
-    private CustomLockScreenFragment.OnPFLockScreenCodeCreateListener codeCreateListener(CustomLockScreenFragment fragment) {
-        CustomLockScreenFragment.OnPFLockScreenCodeCreateListener createCodeListener = new CustomLockScreenFragment.OnPFLockScreenCodeCreateListener() {
+    private LockPadScreenFragment.OnLPLockScreenCodeCreateListener codeCreateListener(LockPadScreenFragment fragment) {
+        LockPadScreenFragment.OnLPLockScreenCodeCreateListener createCodeListener = new LockPadScreenFragment.OnLPLockScreenCodeCreateListener() {
             @Override
             public void onCodeCreated(String encodedCode) {
                 //Save new password
@@ -398,6 +398,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     currentPic = BitmapUtil.getBitmapFromUri(getApplicationContext(), imageUri);
                     imgPreview.setImageBitmap(null);
                     imgPreview.setImageBitmap(currentPic);
+
+
                     PrefManager.saveCurrentPic(getApplicationContext(), currentPic);
                     break;
                 case OVERLAY_PERMISSION_CODE:

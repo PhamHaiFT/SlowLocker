@@ -4,11 +4,11 @@
 
 
     <item
-        android:drawable="@drawable/ic_lock_charge_three"
+        android:drawable="@drawable/ic_lock_charge_two"
         android:duration="@integer/charge_battery_anim_frame_duration" />
 
     <item
-        android:drawable="@drawable/ic_lock_charge_four"
+        android:drawable="@drawable/ic_lock_charge_full"
         android:duration="@integer/charge_battery_anim_frame_duration" />
 
 </animation-list>

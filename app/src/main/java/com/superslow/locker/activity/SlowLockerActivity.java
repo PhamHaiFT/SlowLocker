@@ -26,8 +26,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.beautycoder.pflockscreen.PFFLockScreenConfiguration;
-import com.beautycoder.pflockscreen.fragments.CustomLockScreenFragment;
+import com.lockpad.sslockscreen.LPFLockScreenConfiguration;
+import com.lockpad.sslockscreen.fragments.LockPadScreenFragment;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 import com.superslow.locker.R;
@@ -93,8 +93,8 @@ public class SlowLockerActivity extends AppCompatActivity {
     private Handler handler = new Handler();
     @BindView(R.id.tvTitle)
     ShimmerTextView tvTitle;
-    private PFFLockScreenConfiguration.Builder builder;
-    private CustomLockScreenFragment lockScreenFragment;
+    private LPFLockScreenConfiguration.Builder builder;
+    private LockPadScreenFragment lockScreenFragment;
 
     @Override
     protected void onStart() {
@@ -232,15 +232,15 @@ public class SlowLockerActivity extends AppCompatActivity {
     }
 
     private void initPassword() {
-        builder = new PFFLockScreenConfiguration.Builder(this)
-                .setMode(PFFLockScreenConfiguration.MODE_AUTH)
+        builder = new LPFLockScreenConfiguration.Builder(this)
+                .setMode(LPFLockScreenConfiguration.MODE_AUTH)
                 .setTitle("Enter pin code")
                 .setCodeLength(4);
 
-        lockScreenFragment = new CustomLockScreenFragment();
+        lockScreenFragment = new LockPadScreenFragment();
 
         lockScreenFragment.setEncodedPinCode(PrefManager.getPassword(getApplicationContext()));
-        lockScreenFragment.setLoginListener(new CustomLockScreenFragment.OnPFLockScreenLoginListener() {
+        lockScreenFragment.setLoginListener(new LockPadScreenFragment.OnLPLockScreenLoginListener() {
             @Override
             public void onCodeInputSuccessful() {
                 Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
@@ -443,7 +443,7 @@ public class SlowLockerActivity extends AppCompatActivity {
         } else if (level < 100) {
             mBatteryIcon.setImageResource(R.drawable.lock_battery_charging_90);
         } else if (level == 100) {
-            mBatteryIcon.setImageResource(R.drawable.ic_lock_charge_four);
+            mBatteryIcon.setImageResource(R.drawable.ic_lock_charge_full);
         }
 
         if (level < 100 && mBatteryIcon.getDrawable() instanceof Animatable) {

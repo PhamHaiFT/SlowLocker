@@ -3,10 +3,10 @@
     android:oneshot="false">
 
     <item
-        android:drawable="@drawable/ic_lock_charge_two"
+        android:drawable="@drawable/ic_lock_charge_one"
         android:duration="@integer/charge_battery_anim_frame_duration" />
     <item
-        android:drawable="@drawable/ic_lock_charge_three"
+        android:drawable="@drawable/ic_lock_charge_two"
         android:duration="@integer/charge_battery_anim_frame_duration" />
 
 

@@ -9,8 +9,8 @@
         android:layout_width="48dp"
         android:layout_height="340dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="32dp"
         android:layout_marginTop="-240dp"
+        android:layout_marginRight="32dp"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_lock_cross_one" />
+        android:src="@drawable/ic_lock_cross_firework" />
 </RelativeLayout>

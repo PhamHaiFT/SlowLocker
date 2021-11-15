@@ -1,1 +1,1 @@
-include ':app',':pflockscreen'
+include ':app',':lockpad'
