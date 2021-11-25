@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.superslow.locker.util.DevicePolicyUtil;
 
-public class AdminReceiver extends DeviceAdminReceiver {
+public class LPAdminReceiver extends DeviceAdminReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {

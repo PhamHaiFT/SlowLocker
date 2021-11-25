@@ -1,14 +1,15 @@
 package com.lockpad.sslockscreen;
 
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
 import android.content.Context;
+
 import androidx.annotation.IntDef;
 
 import java.io.Serializable;
 import java.lang.annotation.Retention;
 
-import static java.lang.annotation.RetentionPolicy.SOURCE;
-
-public class LPFLockScreenConfiguration implements Serializable {
+public class LPConfiguration implements Serializable {
 
     private String mLeftButton = "";
     private String mNextButton = "";
@@ -23,7 +24,7 @@ public class LPFLockScreenConfiguration implements Serializable {
     private boolean mNewCodeValidation = false;
     private String mNewCodeValidationTitle = "";
 
-    private LPFLockScreenConfiguration(Builder builder) {
+    private LPConfiguration(Builder builder) {
         mLeftButton = builder.mLeftButton;
         mNextButton = builder.mNextButton;
         mUseFingerprint = builder.mUseFingerprint;
@@ -82,7 +83,7 @@ public class LPFLockScreenConfiguration implements Serializable {
         return mNewCodeValidationTitle;
     }
 
-    @LPLockScreenMode
+    @LPMode
     public int getMode() {
         return this.mMode;
     }
@@ -132,7 +133,7 @@ public class LPFLockScreenConfiguration implements Serializable {
             return this;
         }
 
-        public Builder setMode(@LPLockScreenMode int mode) {
+        public Builder setMode(@LPMode int mode) {
             mMode = mode;
             return this;
         }
@@ -167,8 +168,8 @@ public class LPFLockScreenConfiguration implements Serializable {
             return this;
         }
 
-        public LPFLockScreenConfiguration build() {
-            return new LPFLockScreenConfiguration(
+        public LPConfiguration build() {
+            return new LPConfiguration(
                     this);
         }
 
@@ -177,7 +178,7 @@ public class LPFLockScreenConfiguration implements Serializable {
 
     @Retention(SOURCE)
     @IntDef({MODE_CREATE, MODE_AUTH})
-    public @interface LPLockScreenMode {}
+    public @interface LPMode {}
     public static final int MODE_CREATE = 0;
     public static final int MODE_AUTH = 1;
 

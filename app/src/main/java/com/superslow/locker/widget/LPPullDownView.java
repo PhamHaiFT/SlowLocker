@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import com.superslow.locker.R;
 import com.superslow.locker.util.DimenUtils;
 
-public class TouchPullDownView extends FrameLayout {
+public class LPPullDownView extends FrameLayout {
 
     private ImageView mLockLine;
 
@@ -34,17 +34,17 @@ public class TouchPullDownView extends FrameLayout {
     private float moveDistance = 0;
     private float totalDistance = 0;
 
-    public TouchPullDownView(@NonNull Context context) {
+    public LPPullDownView(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public TouchPullDownView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public LPPullDownView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public TouchPullDownView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+    public LPPullDownView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -143,7 +143,7 @@ public class TouchPullDownView extends FrameLayout {
         pullDownAnim.setRepeatCount(0);
         pullDownAnim.setDuration(500);
         pullDownAnim.setInterpolator(new DecelerateInterpolator());
-        pullDownAnim.addListener(new SimpleAnimationListener() {
+        pullDownAnim.addListener(new LPAnimationListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
@@ -162,7 +162,7 @@ public class TouchPullDownView extends FrameLayout {
         kickBackAnim.setRepeatCount(0);
         kickBackAnim.setDuration(500);
         kickBackAnim.setInterpolator(new DecelerateInterpolator());
-        kickBackAnim.addListener(new SimpleAnimationListener() {
+        kickBackAnim.addListener(new LPAnimationListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);

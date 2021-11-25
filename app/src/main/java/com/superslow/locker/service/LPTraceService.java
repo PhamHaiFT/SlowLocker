@@ -6,10 +6,8 @@ import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.RequiresApi;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 
 import com.xdandroid.hellodaemon.*;
 
@@ -18,7 +16,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
-public class TraceService extends AbsWorkService {
+public class LPTraceService extends AbsWorkService {
 
     public static boolean sShouldStopService;
     public static Disposable sDisposable;
@@ -50,11 +48,11 @@ public class TraceService extends AbsWorkService {
                     public void accept(Long count) throws Exception {
 //
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            LockerService.startForegroundService(getBaseContext());
+                            LPLockerService.startForegroundService(getBaseContext());
                         } else {
-                            LockerService.startService(getBaseContext());
+                            LPLockerService.startService(getBaseContext());
                         }
-                        LockerService.startService(getBaseContext());
+                        LPLockerService.startService(getBaseContext());
 
                         System.out.println("count = " + count);
                         if (count > 0 && count % 18 == 0)

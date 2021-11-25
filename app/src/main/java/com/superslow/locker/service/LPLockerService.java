@@ -7,15 +7,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.superslow.locker.receiver.LockerReceiver;
+import com.superslow.locker.receiver.LPLockerReceiver;
 
 import io.reactivex.annotations.Nullable;
 
-public class LockerService extends Service {
+public class LPLockerService extends Service {
 
     @Nullable
     @Override
@@ -42,7 +41,7 @@ public class LockerService extends Service {
 
     public static void startService(Context context) {
         try {
-            Intent intent = new Intent(context, LockerService.class);
+            Intent intent = new Intent(context, LPLockerService.class);
             intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             context.startService(intent);
         } catch (Exception e) {
@@ -53,7 +52,7 @@ public class LockerService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void startForegroundService(Context context) {
         try {
-            Intent intent = new Intent(context, LockerService.class);
+            Intent intent = new Intent(context, LPLockerService.class);
             intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             context.startForegroundService(intent);
         } catch (Exception e) {
@@ -61,7 +60,7 @@ public class LockerService extends Service {
         }
     }
 
-    private LockerReceiver lockerReceiver;
+    private LPLockerReceiver lockerReceiver;
 
     private void registerLockerReceiver() {
         if (lockerReceiver != null) {
@@ -72,7 +71,7 @@ public class LockerService extends Service {
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SCREEN_ON);
 
-        lockerReceiver = new LockerReceiver();
+        lockerReceiver = new LPLockerReceiver();
         registerReceiver(lockerReceiver, filter);
     }
 

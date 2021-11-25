@@ -10,7 +10,7 @@ import android.util.Log;
 import java.io.ByteArrayOutputStream;
 
 public class PrefManager {
-    private static final String TAG = "PrefManager";
+    
     public static final String PREF_NAME = "PREF_NAME";
     public static final String TITLE_KEY = "TITLE_KEY";
     public static final String PASSWORD_STATE = "PASSWORD_STATE";

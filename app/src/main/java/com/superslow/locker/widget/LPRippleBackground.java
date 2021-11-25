@@ -19,7 +19,7 @@ import com.superslow.locker.R;
 
 import java.util.ArrayList;
 
-public class RippleBackground extends RelativeLayout {
+public class LPRippleBackground extends RelativeLayout {
 
     private static final int DEFAULT_RIPPLE_COUNT = 6;
     private static final int DEFAULT_DURATION_TIME = 3000;
@@ -41,16 +41,16 @@ public class RippleBackground extends RelativeLayout {
     private LayoutParams rippleParams;
     private ArrayList<RippleView> rippleViewList = new ArrayList<>();
 
-    public RippleBackground(Context context) {
+    public LPRippleBackground(Context context) {
         super(context);
     }
 
-    public RippleBackground(Context context, AttributeSet attrs) {
+    public LPRippleBackground(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public RippleBackground(Context context, AttributeSet attrs, int defStyleAttr) {
+    public LPRippleBackground(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }

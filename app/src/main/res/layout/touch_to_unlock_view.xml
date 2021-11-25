@@ -27,7 +27,7 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="bottom|center_horizontal">
 
-        <com.superslow.locker.widget.RippleBackground
+        <com.superslow.locker.widget.LPRippleBackground
             android:id="@+id/rb_LockRipple"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

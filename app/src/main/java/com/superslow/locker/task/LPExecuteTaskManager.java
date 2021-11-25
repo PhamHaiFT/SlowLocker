@@ -14,7 +14,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 
-public class ExecuteTaskManager implements Runnable {
+public class LPExecuteTaskManager implements Runnable {
 
     private static final int COMMON_EXECUTE_TASK_TYPE = 0;
 
@@ -30,7 +30,7 @@ public class ExecuteTaskManager implements Runnable {
 
     private static ExecutorService threadPool = null;
 
-    private static ConcurrentLinkedQueue<ExecuteTask> allExecuteTask = null;
+    private static ConcurrentLinkedQueue<LPExecuteTask> allLPExecuteTask = null;
 
     private static ConcurrentHashMap<Integer, Object> uniqueListenerList = null;
 
@@ -54,7 +54,7 @@ public class ExecuteTaskManager implements Runnable {
     }
 
     public interface GetExecuteTaskCallback {
-        void onDataLoaded(ExecuteTask task);
+        void onDataLoaded(LPExecuteTask task);
     }
 
     private final static Handler handler = new Handler(Looper.getMainLooper()) {
@@ -64,8 +64,8 @@ public class ExecuteTaskManager implements Runnable {
 
             switch (msg.what) {
                 case COMMON_EXECUTE_TASK_TYPE:
-                    if (msg.obj != null && msg.obj instanceof ExecuteTask) {
-                        ExecuteTaskManager.getInstance().doCommonHandler((ExecuteTask) msg.obj);
+                    if (msg.obj != null && msg.obj instanceof LPExecuteTask) {
+                        LPExecuteTaskManager.getInstance().doCommonHandler((LPExecuteTask) msg.obj);
                     } else {
                     }
                     break;
@@ -78,16 +78,16 @@ public class ExecuteTaskManager implements Runnable {
     };
 
 
-    private static ExecuteTaskManager instance = null;
+    private static LPExecuteTaskManager instance = null;
 
-    private ExecuteTaskManager() {
+    private LPExecuteTaskManager() {
     }
 
-    public static ExecuteTaskManager getInstance() {
+    public static LPExecuteTaskManager getInstance() {
         if (instance == null) {
-            synchronized (ExecuteTaskManager.class) {
+            synchronized (LPExecuteTaskManager.class) {
                 if (instance == null) {
-                    instance = new ExecuteTaskManager();
+                    instance = new LPExecuteTaskManager();
                 }
             }
         }
@@ -107,7 +107,7 @@ public class ExecuteTaskManager implements Runnable {
             }
             threadPool = Executors.newFixedThreadPool(threadNum);
             singlePool = Executors.newSingleThreadScheduledExecutor();
-            allExecuteTask = new ConcurrentLinkedQueue<>();
+            allLPExecuteTask = new ConcurrentLinkedQueue<>();
             uniqueListenerList = new ConcurrentHashMap<>();
             md5FilterList = new ConcurrentSkipListSet<>();
 
@@ -123,9 +123,9 @@ public class ExecuteTaskManager implements Runnable {
     public void doDestroy() {
         isRunning = false;
         isHasInit = false;
-        if (allExecuteTask != null) {
-            allExecuteTask.clear();
-            allExecuteTask = null;
+        if (allLPExecuteTask != null) {
+            allLPExecuteTask.clear();
+            allLPExecuteTask = null;
         }
         if (uniqueListenerList != null) {
             uniqueListenerList.clear();
@@ -146,17 +146,17 @@ public class ExecuteTaskManager implements Runnable {
     }
 
 
-    public void newExecuteTask(ExecuteTask task) {
+    public void newExecuteTask(LPExecuteTask task) {
         if (task != null) {
 
             if (!TextUtils.isEmpty(task.getMd5Id()) && md5FilterList.contains(task.getMd5Id())) {
                 return;
             }
 
-            allExecuteTask.offer(task);
+            allLPExecuteTask.offer(task);
             long timeOne = System.currentTimeMillis();
-            synchronized (allExecuteTask) {
-                allExecuteTask.notifyAll();
+            synchronized (allLPExecuteTask) {
+                allLPExecuteTask.notifyAll();
             }
             long timeTwo = System.currentTimeMillis();
         } else {
@@ -164,7 +164,7 @@ public class ExecuteTaskManager implements Runnable {
     }
 
 
-    public void getData(ExecuteTask task, GetExecuteTaskCallback callback) {
+    public void getData(LPExecuteTask task, GetExecuteTaskCallback callback) {
 
         try {
             if (task != null && callback != null) {
@@ -191,7 +191,7 @@ public class ExecuteTaskManager implements Runnable {
         }
     }
 
-    public void removeExecuteTask(ExecuteTask task) {
+    public void removeExecuteTask(LPExecuteTask task) {
         if (task != null) {
             if (task.getUniqueID() > 0) {
                 uniqueListenerList.remove(task.getUniqueID());
@@ -199,14 +199,14 @@ public class ExecuteTaskManager implements Runnable {
             if (!TextUtils.isEmpty(task.getMd5Id())) {
                 md5FilterList.remove(task.getMd5Id());
             }
-            allExecuteTask.remove(task);
+            allLPExecuteTask.remove(task);
         } else {
         }
     }
 
 
     public void removeAllExecuteTask() {
-        allExecuteTask.clear();
+        allLPExecuteTask.clear();
         uniqueListenerList.clear();
         md5FilterList.clear();
     }
@@ -215,20 +215,20 @@ public class ExecuteTaskManager implements Runnable {
     public void run() {
         while (isRunning) {
 
-            ExecuteTask lastExecuteTask = allExecuteTask.poll();
+            LPExecuteTask lastLPExecuteTask = allLPExecuteTask.poll();
 
-            if (lastExecuteTask != null) {
+            if (lastLPExecuteTask != null) {
                 try {
-                    doExecuteTask(lastExecuteTask);
+                    doExecuteTask(lastLPExecuteTask);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    lastExecuteTask.setStatus(ExecuteTask.EXCUTE_TASK_ERROR);
-                    doSendMessage(lastExecuteTask);
+                    lastLPExecuteTask.setStatus(LPExecuteTask.EXCUTE_TASK_ERROR);
+                    doSendMessage(lastLPExecuteTask);
                 }
             } else {
                 try {
-                    synchronized (allExecuteTask) {
-                        allExecuteTask.wait();
+                    synchronized (allLPExecuteTask) {
+                        allLPExecuteTask.wait();
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -237,14 +237,14 @@ public class ExecuteTaskManager implements Runnable {
         }
     }
 
-    private void doExecuteTask(ExecuteTask task) {
+    private void doExecuteTask(LPExecuteTask task) {
         if (task == null) {
             return;
         }
 
         long startTime = System.currentTimeMillis();
 
-        ExecuteTask result = task.doTask();
+        LPExecuteTask result = task.doTask();
 
         if (result != null && task == result && result.getUniqueID() != 0) {
             doSendMessage(task);
@@ -259,7 +259,7 @@ public class ExecuteTaskManager implements Runnable {
     }
 
 
-    private void doSendMessage(ExecuteTask result) {
+    private void doSendMessage(LPExecuteTask result) {
         if (result.isMainThread()) {
             Message msg = Message.obtain();
             msg.what = COMMON_EXECUTE_TASK_TYPE;
@@ -270,7 +270,7 @@ public class ExecuteTaskManager implements Runnable {
         }
     }
 
-    private void doCommonHandler(ExecuteTask task) {
+    private void doCommonHandler(LPExecuteTask task) {
         long start = System.currentTimeMillis();
 
         if (task != null) {

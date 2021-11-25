@@ -9,14 +9,14 @@ import com.lockpad.sslockscreen.security.callbacks.LPPinCodeHelperCallback;
 
 public class LPFingerprintPinCodeHelper implements ILPPinCodeHelper {
 
-
     private static final String FINGERPRINT_ALIAS = "fp_fingerprint_lock_screen_key_store";
     private static final String PIN_ALIAS = "fp_pin_lock_screen_key_store";
 
     private static final LPFingerprintPinCodeHelper ourInstance = new LPFingerprintPinCodeHelper();
 
     public static LPFingerprintPinCodeHelper getInstance() {
-        return ourInstance;
+//        return ourInstance;
+        return null;
     }
 
     private final IPFSecurityUtils pfSecurityUtils

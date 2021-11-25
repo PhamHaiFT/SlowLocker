@@ -10,13 +10,13 @@ import com.github.shchurov.particleview.TextureAtlas;
 import java.util.Arrays;
 import java.util.List;
 
-public class MyTextureAtlasFactory implements com.github.shchurov.particleview.TextureAtlasFactory {
+public class LPMyTexture implements com.github.shchurov.particleview.TextureAtlasFactory {
 
     public static final int TEXTURE_COUNT = 16;
 
     private Resources resources;
 
-    public MyTextureAtlasFactory(Resources resources) {
+    public LPMyTexture(Resources resources) {
         this.resources = resources;
     }
 

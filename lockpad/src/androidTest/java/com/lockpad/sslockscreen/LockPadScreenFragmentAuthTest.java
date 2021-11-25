@@ -1,6 +1,15 @@
 package com.lockpad.sslockscreen;
 
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.not;
+
 import android.content.Context;
+
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.matcher.ViewMatchers;
 
@@ -9,16 +18,6 @@ import com.lockpad.sslockscreen.rules.FragmentTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
-
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class LockPadScreenFragmentAuthTest {
 
@@ -31,12 +30,12 @@ public class LockPadScreenFragmentAuthTest {
         @Override
         public LockPadScreenFragment getInstance(Context context) {
             final LockPadScreenFragment fragment = new LockPadScreenFragment();
-            final LPFLockScreenConfiguration.Builder builder =
-                    new LPFLockScreenConfiguration.Builder(context)
+            final LPConfiguration.Builder builder =
+                    new LPConfiguration.Builder(context)
                             .setCodeLength(CODE_LENGTH)
                             .setLeftButton(LEFT_BUTTON)
                             .setUseFingerprint(true)
-                            .setMode(LPFLockScreenConfiguration.MODE_AUTH);
+                            .setMode(LPConfiguration.MODE_AUTH);
             fragment.setConfiguration(builder.build());
             return fragment;
         }

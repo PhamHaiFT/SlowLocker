@@ -16,7 +16,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class SparkView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
+public class LPSparkView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
     private SurfaceHolder mHolder;
 
@@ -24,7 +24,7 @@ public class SparkView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
     private boolean isRun;
 
-    private SparkManager sparkManager;
+    private LPSparkManager LPSparkManager;
 
     private double X, Y;
 
@@ -32,17 +32,17 @@ public class SparkView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
     private Random random = new Random();
 
-    public SparkView(Context context) {
+    public LPSparkView(Context context) {
         super(context);
         init();
     }
 
-    public SparkView(Context context, AttributeSet attrs) {
+    public LPSparkView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public SparkView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public LPSparkView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -57,7 +57,7 @@ public class SparkView extends SurfaceView implements SurfaceHolder.Callback, Ru
         WIDTH = metric.widthPixels;
         HEIGHT = metric.heightPixels;
 
-        sparkManager = new SparkManager();
+        LPSparkManager = new LPSparkManager();
 
         mHolder = this.getHolder();
         mHolder.addCallback(this);
@@ -79,7 +79,7 @@ public class SparkView extends SurfaceView implements SurfaceHolder.Callback, Ru
                         mCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
                         for (int[] n : sparks) {
-                            n = sparkManager.drawSpark(mCanvas, (int) X, (int) Y, n);
+                            n = LPSparkManager.drawSpark(mCanvas, (int) X, (int) Y, n);
                         }
 
                         Thread.sleep(Math.max(0, 10 - (new Date().getTime() - date.getTime())));
@@ -102,7 +102,7 @@ public class SparkView extends SurfaceView implements SurfaceHolder.Callback, Ru
     }
 
     public void setActive(boolean isActive) {
-        sparkManager.isActive = isActive;
+        LPSparkManager.isActive = isActive;
     }
 
 
@@ -114,12 +114,12 @@ public class SparkView extends SurfaceView implements SurfaceHolder.Callback, Ru
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_MOVE:
-                        sparkManager.isActive = true;
+                        LPSparkManager.isActive = true;
                         X = event.getX();
                         Y = event.getY();
                         break;
                     case MotionEvent.ACTION_UP:
-                        sparkManager.isActive = false;
+                        LPSparkManager.isActive = false;
                         break;
                     default:
                         break;

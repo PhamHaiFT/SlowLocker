@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="@string/fingerprint_description_pf"
+        android:text="Please touch the sensor"
         android:textAppearance="@android:style/TextAppearance.Material.Subhead"
-        android:textColor="?android:attr/textColorSecondary"/>
+        android:textColor="?android:attr/textColorSecondary" />
 
 
     <ImageView
@@ -35,8 +35,8 @@
         style="@android:style/TextAppearance.Material.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/fingerprint_icon"
         android:layout_alignTop="@+id/fingerprint_icon"
+        android:layout_alignBottom="@+id/fingerprint_icon"
         android:layout_marginStart="16dp"
         android:layout_toEndOf="@+id/fingerprint_icon"
         android:gravity="center_vertical"

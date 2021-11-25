@@ -7,16 +7,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.superslow.locker.service.LockerService;
+import com.superslow.locker.service.LPLockerService;
 
 public class DevicePolicyUtil {
 
-    private static final String TAG = "DevicePolicyUtil";
-    
     private DevicePolicyListener devicePolicyListener;
     private DevicePolicyManager devicePolicyManager;
     private ComponentName componentName;
@@ -35,7 +32,7 @@ public class DevicePolicyUtil {
     private DevicePolicyUtil(Context context) {
         this.context = context;
         devicePolicyManager = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-        componentName = new ComponentName(context, LockerService.class);
+        componentName = new ComponentName(context, LPLockerService.class);
     }
 
     public boolean isAdminActive() {

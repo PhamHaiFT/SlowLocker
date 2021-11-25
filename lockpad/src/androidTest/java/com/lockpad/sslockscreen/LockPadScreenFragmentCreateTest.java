@@ -1,6 +1,17 @@
 package com.lockpad.sslockscreen;
 
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import android.content.Context;
+
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.matcher.ViewMatchers;
 
@@ -13,16 +24,6 @@ import com.lockpad.sslockscreen.security.callbacks.LPPinCodeHelperCallback;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 public class LockPadScreenFragmentCreateTest {
 
     private static final int CODE_LENGTH = 5;
@@ -33,11 +34,11 @@ public class LockPadScreenFragmentCreateTest {
         @Override
         public LockPadScreenFragment getInstance(Context context) {
             LockPadScreenFragment fragment = new LockPadScreenFragment();
-            LPFLockScreenConfiguration.Builder builder = new LPFLockScreenConfiguration.Builder(context)
+            LPConfiguration.Builder builder = new LPConfiguration.Builder(context)
                     .setTitle("Unlock with your pin code")
                     .setCodeLength(CODE_LENGTH)
                     .setUseFingerprint(true)
-                    .setMode(LPFLockScreenConfiguration.MODE_CREATE);
+                    .setMode(LPConfiguration.MODE_CREATE);
             fragment.setConfiguration(builder.build());
             return fragment;
         }

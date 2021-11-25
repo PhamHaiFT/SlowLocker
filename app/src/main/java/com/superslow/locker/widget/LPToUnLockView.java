@@ -4,9 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import androidx.annotation.AttrRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,12 +11,16 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.superslow.locker.R;
 import com.superslow.locker.util.DimenUtils;
 
-public class TouchToUnLockView extends FrameLayout {
+public class LPToUnLockView extends FrameLayout {
 
-    private RippleBackground mLockRipple;
+    private LPRippleBackground mLockRipple;
     private View mUnLockContainer;
     private TextView mUnlockTips;
 
@@ -39,17 +40,17 @@ public class TouchToUnLockView extends FrameLayout {
     private int moveDistance = 0;
     private float unlockDistance = 0;
 
-    public TouchToUnLockView(@NonNull Context context) {
+    public LPToUnLockView(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public TouchToUnLockView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public LPToUnLockView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public TouchToUnLockView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+    public LPToUnLockView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -59,7 +60,7 @@ public class TouchToUnLockView extends FrameLayout {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.touch_to_unlock_view, this);
         mUnLockContainer = view.findViewById(R.id.fram_UnLockContainer);
         unlockDistance = (float) DimenUtils.getScreenWidth(getContext()) * 2 / 3;
-        mLockRipple = (RippleBackground) view.findViewById(R.id.rb_LockRipple);
+        mLockRipple = (LPRippleBackground) view.findViewById(R.id.rb_LockRipple);
         mUnlockTips = (TextView) view.findViewById(R.id.txtv_UnlockTips);
         circleRadius = DimenUtils.dp2px(getContext(), 22) + 1;
 

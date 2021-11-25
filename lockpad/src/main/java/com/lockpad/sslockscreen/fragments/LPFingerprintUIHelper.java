@@ -1,11 +1,12 @@
 package com.lockpad.sslockscreen.fragments;
 
 import android.os.Build;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.RequiresApi;
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import androidx.core.os.CancellationSignal;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.lockpad.sslockscreen.R;
 
@@ -34,8 +35,6 @@ public class LPFingerprintUIHelper extends FingerprintManagerCompat.Authenticati
     }
 
     public boolean isFingerprintAuthAvailable() {
-        // The line below prevents the false positive inspection from Android Studio
-        // noinspection ResourceType
         return mFingerprintManager.isHardwareDetected()
                 && mFingerprintManager.hasEnrolledFingerprints();
     }
@@ -46,11 +45,9 @@ public class LPFingerprintUIHelper extends FingerprintManagerCompat.Authenticati
         }
         mCancellationSignal = new CancellationSignal();
         mSelfCancelled = false;
-        // The line below prevents the false positive inspection from Android Studio
-        // noinspection ResourceType
         mFingerprintManager.authenticate(
                 cryptoObject, 0, mCancellationSignal, this, null);
-        mIcon.setImageResource(R.drawable.ic_fp_40px_pf);
+//        mIcon.setImageResource(R.drawable.ic_fp_40px_pf);
     }
 
     public void stopListening() {
@@ -88,7 +85,7 @@ public class LPFingerprintUIHelper extends FingerprintManagerCompat.Authenticati
     @Override
     public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
         mErrorTextView.removeCallbacks(mResetErrorTextRunnable);
-        mIcon.setImageResource(R.drawable.ic_fingerprint_success_pf);
+//        mIcon.setImageResource(R.drawable.ic_fingerprint_success_pf);
         mErrorTextView.setTextColor(
                 mErrorTextView.getResources().getColor(R.color.success_color, null));
         mErrorTextView.setText(
@@ -102,7 +99,7 @@ public class LPFingerprintUIHelper extends FingerprintManagerCompat.Authenticati
     }
 
     private void showError(CharSequence error) {
-        mIcon.setImageResource(R.drawable.ic_fingerprint_error_pf);
+//        mIcon.setImageResource(R.drawable.ic_fingerprint_error_pf);
         mErrorTextView.setText(error);
         mErrorTextView.setTextColor(
                 mErrorTextView.getResources().getColor(R.color.warning_color, null));
@@ -117,7 +114,7 @@ public class LPFingerprintUIHelper extends FingerprintManagerCompat.Authenticati
                     mErrorTextView.getResources().getColor(R.color.hint_color, null));
             mErrorTextView.setText(
                     mErrorTextView.getResources().getString(R.string.fingerprint_hint_pf));
-            mIcon.setImageResource(R.drawable.ic_fp_40px_pf);
+//            mIcon.setImageResource(R.drawable.ic_fp_40px_pf);
         }
     };
 

@@ -5,6 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/vOverLay"
+        />
+
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -31,10 +37,10 @@
         android:textColor="#FFF"
         android:textSize="30sp"
         app:duration="500"
-        app:reflectionColor="#A36C6C6C" />
+        app:reflectionColor="#A36C6C6C"/>
 
-    <com.superslow.locker.spark.SparkView
-        android:id="@+id/sparkView"
+    <com.superslow.locker.spark.LPSparkView
+        android:id="@+id/LPSparkView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -135,7 +141,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <com.superslow.locker.widget.TouchPullDownView
+        <com.superslow.locker.widget.LPPullDownView
             android:id="@+id/pullDownViewLocker"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -148,7 +154,7 @@
         android:layout_height="match_parent" />
 
 
-    <com.superslow.locker.widget.TouchToUnLockView
+    <com.superslow.locker.widget.LPToUnLockView
         android:id="@+id/touchUnlockView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

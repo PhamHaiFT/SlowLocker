@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
-    tools:context=".activity.SettingActivity">
+    tools:context=".activity.LPSettingActivity">
 
     <FrameLayout
         android:id="@+id/container"
@@ -302,6 +302,33 @@
                     android:layout_height="250dp"
                     android:layout_gravity="center"
                     android:src="@drawable/bg_one" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#BF6C6C6C" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvThanks"
+                    android:layout_width="wrap_content"
+                    android:visibility="gone"
+                    android:text="Thanks for support"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/btnVip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Support me"
+                    />
 
             </LinearLayout>
             <!--    End background-->

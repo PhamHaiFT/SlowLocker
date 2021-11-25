@@ -1,26 +1,26 @@
 package com.superslow.locker.task;
 
-import com.superslow.locker.spark.SparkView;
+import com.superslow.locker.spark.LPSparkView;
 
 import java.util.Random;
 
-public class SparkTask extends ExecuteTask {
+public class LPSparkTaskLP extends LPExecuteTask {
 
     private boolean sparkState;
-    private SparkView spSpark;
+    private LPSparkView spSpark;
 
-    public SparkTask(boolean sparkState, SparkView sparkView) {
+    public LPSparkTaskLP(boolean sparkState, LPSparkView LPSparkView) {
         this.sparkState = sparkState;
-        this.spSpark = sparkView;
+        this.spSpark = LPSparkView;
     }
 
     @Override
-    public ExecuteTask doTask() {
+    public LPExecuteTask doTask() {
         if (sparkState) {
-            for (int i = 0; i < SparkView.WIDTH; i++) {
+            for (int i = 0; i < LPSparkView.WIDTH; i++) {
                 spSpark.setActive(true);
                 Random random = new Random();
-                spSpark.startSpark(i, random.nextInt(SparkView.HEIGHT));
+                spSpark.startSpark(i, random.nextInt(LPSparkView.HEIGHT));
                 try {
                     Thread.sleep(2 + random.nextInt(8));
                 } catch (Exception e) {

@@ -2,7 +2,7 @@ package com.superslow.locker.widget;
 
 import android.animation.Animator;
 
-public class SimpleAnimationListener implements Animator.AnimatorListener {
+public class LPAnimationListener implements Animator.AnimatorListener {
 
     @Override
     public void onAnimationStart(Animator animation) {

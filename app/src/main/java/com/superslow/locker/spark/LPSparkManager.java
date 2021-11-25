@@ -8,7 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
-public class SparkManager {
+public class LPSparkManager {
 
 
     private Paint mSparkPaint;
@@ -23,7 +23,7 @@ public class SparkManager {
     private Point startPoint, endPoint, curve1, curve2;
     public boolean isActive = false;
 
-    public SparkManager() {
+    public LPSparkManager() {
         initSparkPaint();
     }
 
@@ -36,13 +36,13 @@ public class SparkManager {
 
         // tạo spark
         if (mCurDistance == mDistance && isActive) {
-            mDistance = getRandom(SparkView.WIDTH / 2, mRandom.nextInt(15)) + 1;
+            mDistance = getRandom(LPSparkView.WIDTH / 2, mRandom.nextInt(15)) + 1;
             mCurDistance = 0;
 
             startPoint = new Point(X, Y);
             endPoint = getRandomPoint(startPoint.x, startPoint.y, (int) mDistance);
-            curve1 = getRandomPoint(startPoint.x, startPoint.y, mRandom.nextInt(SparkView.WIDTH / 16));
-            curve2 = getRandomPoint(endPoint.x, endPoint.y, mRandom.nextInt(SparkView.WIDTH / 16));
+            curve1 = getRandomPoint(startPoint.x, startPoint.y, mRandom.nextInt(LPSparkView.WIDTH / 16));
+            curve2 = getRandomPoint(endPoint.x, endPoint.y, mRandom.nextInt(LPSparkView.WIDTH / 16));
         }
 
         // cập nhật nếu đã có trong store

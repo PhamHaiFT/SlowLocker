@@ -22,14 +22,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
-import com.lockpad.sslockscreen.LPFLockScreenConfiguration;
+import com.lockpad.sslockscreen.LPConfiguration;
 import com.lockpad.sslockscreen.fragments.LockPadScreenFragment;
 import com.lockpad.sslockscreen.security.LPResult;
 import com.lockpad.sslockscreen.security.LPSecurityManager;
 import com.lockpad.sslockscreen.security.callbacks.LPPinCodeHelperCallback;
 import com.lockpad.sslockscreen.viewmodels.LPPinCodeViewModel;
 import com.superslow.locker.R;
-import com.superslow.locker.receiver.AdminReceiver;
+import com.superslow.locker.receiver.LPAdminReceiver;
 import com.superslow.locker.util.BitmapUtil;
 import com.superslow.locker.util.DevicePolicyUtil;
 import com.superslow.locker.util.PrefManager;
@@ -39,9 +39,9 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SettingActivity extends AppCompatActivity implements View.OnClickListener, Switch.OnCheckedChangeListener {
+public class LPSettingActivity extends AppCompatActivity implements View.OnClickListener, Switch.OnCheckedChangeListener {
 
-    private static final String TAG = "SettingActivity";
+    private static final String TAG = "LPSettingActivity";
     @BindView(R.id.btnChoose)
     Button btnChoose;
     @BindView(R.id.imgPreview)
@@ -72,6 +72,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     RelativeLayout rlChangeTitle;
     @BindView(R.id.rlTitleAnimation)
     RelativeLayout rlTitleAnimation;
+    @BindView(R.id.btnVip)
+    Button btnVip;
+
 
     private final int CHOOSE_IMAGE = 1903;
     private final int REQUEST_ADMIN = 1904;
@@ -86,10 +89,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         getWindow().getDecorView().setSystemUiVisibility(getSystemUiVisibility());
         setContentView(R.layout.activity_setting);
-//        getSupportActionBar().hide();
         ButterKnife.bind(this);
 
-//        checkHasAdminActive();
         checkAlertPermission();
         initView();
     }
@@ -109,7 +110,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             Intent intent = new Intent(
                     DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
             intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
-                    new ComponentName(getApplicationContext(), AdminReceiver.class));
+                    new ComponentName(getApplicationContext(), LPAdminReceiver.class));
             intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
                     "LockScreen");
             startActivityForResult(intent, REQUEST_ADMIN);
@@ -121,8 +122,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         btnSaveTitle.setOnClickListener(this);
         btnDefault.setOnClickListener(this);
         btnApply.setOnClickListener(this);
+        btnVip.setOnClickListener(this);
 
-//        swPassword.setOnCheckedChangeListener(this);
         swSpark.setOnCheckedChangeListener(this);
         swBurstParticle.setOnCheckedChangeListener(this);
         swTitle.setOnCheckedChangeListener(this);
@@ -173,7 +174,15 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.btnDefault:
                 resetSetting();
                 break;
+            case R.id.btnVip:
+                supportMe();
+                break;
         }
+    }
+
+    private void supportMe() {
+        Intent intent = new Intent(LPSettingActivity.this, InAppPurchaseAcivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -240,7 +249,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void showLockScreenFragment(Boolean isPinExist) {
-        final LPFLockScreenConfiguration.Builder builder = new LPFLockScreenConfiguration
+        final LPConfiguration.Builder builder = new LPConfiguration
                 .Builder(this)
                 .setTitle(isPinExist ? "Input code to disable" : "Create pin code")
                 .setCodeLength(4)
@@ -257,7 +266,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 getSupportFragmentManager().beginTransaction().remove(lockScreenFragment).commit();
             }
         });
-        builder.setMode(isPinExist ? LPFLockScreenConfiguration.MODE_AUTH : LPFLockScreenConfiguration.MODE_CREATE);
+        builder.setMode(isPinExist ? LPConfiguration.MODE_AUTH : LPConfiguration.MODE_CREATE);
 
         if (isPinExist) {
             lockScreenFragment.setEncodedPinCode(PrefManager.getPassword(getApplicationContext()));
@@ -269,8 +278,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         getSupportFragmentManager().beginTransaction().replace(R.id.container, lockScreenFragment).commit();
     }
 
-    private LockPadScreenFragment.OnLPLockScreenLoginListener loginListener(LockPadScreenFragment fragment) {
-        LockPadScreenFragment.OnLPLockScreenLoginListener loginListener = new LockPadScreenFragment.OnLPLockScreenLoginListener() {
+    private LockPadScreenFragment.OnLPLoginListener loginListener(LockPadScreenFragment fragment) {
+        LockPadScreenFragment.OnLPLoginListener loginListener = new LockPadScreenFragment.OnLPLoginListener() {
             @Override
             public void onCodeInputSuccessful() {
                 boolean currentPasswordState = PrefManager.getPasswordState(getApplicationContext());
@@ -304,11 +313,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         return loginListener;
     }
 
-    private LockPadScreenFragment.OnLPLockScreenCodeCreateListener codeCreateListener(LockPadScreenFragment fragment) {
-        LockPadScreenFragment.OnLPLockScreenCodeCreateListener createCodeListener = new LockPadScreenFragment.OnLPLockScreenCodeCreateListener() {
+    private LockPadScreenFragment.OnLPCodeCreateListener codeCreateListener(LockPadScreenFragment fragment) {
+        LockPadScreenFragment.OnLPCodeCreateListener createCodeListener = new LockPadScreenFragment.OnLPCodeCreateListener() {
             @Override
             public void onCodeCreated(String encodedCode) {
-                //Save new password
                 Toast.makeText(getApplicationContext(), "Pin code created", Toast.LENGTH_SHORT).show();
                 PrefManager.savePassword(getApplicationContext(), encodedCode);
                 PrefManager.savePasswordState(getApplicationContext(), true);
@@ -376,7 +384,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     private void gotoLockScreen() {
 //        DevicePolicyUtil.getInstance(getApplicationContext()).lockNow();
-        Intent intent = new Intent(SettingActivity.this, SlowLockerActivity.class);
+        Intent intent = new Intent(LPSettingActivity.this, LPSlowLockerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finishAffinity();
@@ -406,7 +414,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     if (requestCode == OVERLAY_PERMISSION_CODE) {
                         askedForOverlayPermission = false;
                         if (Settings.canDrawOverlays(this)) {
-                            //Permission granted
                         } else {
                             Toast.makeText(getApplicationContext(), "ACTION_MANAGE_OVERLAY_PERMISSION Permission Denied", Toast.LENGTH_SHORT).show();
                             finish();

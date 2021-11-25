@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 
-public class PowerUtil {
+public class BatteryUtil {
 
     public static boolean isCharging(Context context) {
         int status = getBatteryStatus(context, BatteryManager.EXTRA_STATUS, -1);

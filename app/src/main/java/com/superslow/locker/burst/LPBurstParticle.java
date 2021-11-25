@@ -2,7 +2,7 @@ package com.superslow.locker.burst;
 
 import com.github.shchurov.particleview.Particle;
 
-class BurstParticle extends Particle {
+class LPBurstParticle extends Particle {
 
     private static final int SIZE = 64;
 
@@ -11,7 +11,7 @@ class BurstParticle extends Particle {
     float vr;
     double timeLeft;
 
-    BurstParticle() {
+    LPBurstParticle() {
         super(SIZE, SIZE, 0, 0, 0);
     }
 

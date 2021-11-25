@@ -1,21 +1,12 @@
 package com.lockpad.sslockscreen.fragments;
 
 import android.app.AlertDialog;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.Observer;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +16,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.lockpad.sslockscreen.LPFLockScreenConfiguration;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+
+import com.lockpad.sslockscreen.LPConfiguration;
 import com.lockpad.sslockscreen.R;
 import com.lockpad.sslockscreen.security.LPResult;
 import com.lockpad.sslockscreen.viewmodels.LPPinCodeViewModel;
@@ -49,13 +46,13 @@ public class LockPadScreenFragment extends Fragment {
     private boolean mFingerprintHardwareDetected = false;
     private boolean mIsCreateMode = false;
 
-    private OnLPLockScreenCodeCreateListener mCodeCreateListener;
-    private OnLPLockScreenLoginListener mLoginListener;
+    private OnLPCodeCreateListener mCodeCreateListener;
+    private OnLPLoginListener mLoginListener;
     private String mCode = "";
     private String mCodeValidation = "";
     private String mEncodedPinCode = "";
 
-    private LPFLockScreenConfiguration mConfiguration;
+    private LPConfiguration mConfiguration;
     private View mRootView;
 
     private final LPPinCodeViewModel mLPPinCodeViewModel = new LPPinCodeViewModel();
@@ -76,7 +73,7 @@ public class LockPadScreenFragment extends Fragment {
                 false);
 
         if (mConfiguration == null) {
-            mConfiguration = (LPFLockScreenConfiguration) savedInstanceState.getSerializable(
+            mConfiguration = (LPConfiguration) savedInstanceState.getSerializable(
                     INSTANCE_STATE_CONFIG
             );
         }
@@ -117,12 +114,12 @@ public class LockPadScreenFragment extends Fragment {
         super.onStart();
     }
 
-    public void setConfiguration(LPFLockScreenConfiguration configuration) {
+    public void setConfiguration(LPConfiguration configuration) {
         this.mConfiguration = configuration;
         applyConfiguration(configuration);
     }
 
-    private void applyConfiguration(LPFLockScreenConfiguration configuration) {
+    private void applyConfiguration(LPConfiguration configuration) {
         if (mRootView == null || configuration == null) {
             return;
         }
@@ -144,7 +141,7 @@ public class LockPadScreenFragment extends Fragment {
             mFingerprintButton.setVisibility(View.GONE);
             mDeleteButton.setVisibility(View.VISIBLE);
         }
-        mIsCreateMode = mConfiguration.getMode() == LPFLockScreenConfiguration.MODE_CREATE;
+        mIsCreateMode = mConfiguration.getMode() == LPConfiguration.MODE_CREATE;
 
         if (mIsCreateMode) {
             mLeftButton.setVisibility(View.GONE);
@@ -226,7 +223,7 @@ public class LockPadScreenFragment extends Fragment {
 
             final LPFingerprintAuthDialogFragment fragment
                     = new LPFingerprintAuthDialogFragment();
-            fragment.show(getFragmentManager(), "FINGERPRINT_DIALOG_FRAGMENT_TAG");
+            fragment.show(getFragmentManager(), "FINGERPRINT");
             fragment.setAuthListener(new LPFingerprintAuthListener() {
                 @Override
                 public void onAuthenticated() {
@@ -432,11 +429,11 @@ public class LockPadScreenFragment extends Fragment {
         this.mOnLeftButtonClickListener = onLeftButtonClickListener;
     }
 
-    public void setCodeCreateListener(OnLPLockScreenCodeCreateListener listener) {
+    public void setCodeCreateListener(OnLPCodeCreateListener listener) {
         mCodeCreateListener = listener;
     }
 
-    public void setLoginListener(OnLPLockScreenLoginListener listener) {
+    public void setLoginListener(OnLPLoginListener listener) {
         mLoginListener = listener;
     }
 
@@ -444,7 +441,7 @@ public class LockPadScreenFragment extends Fragment {
         mEncodedPinCode = encodedPinCode;
     }
 
-    public interface OnLPLockScreenCodeCreateListener {
+    public interface OnLPCodeCreateListener {
 
         void onCodeCreated(String encodedCode);
 
@@ -452,7 +449,7 @@ public class LockPadScreenFragment extends Fragment {
 
     }
 
-    public interface OnLPLockScreenLoginListener {
+    public interface OnLPLoginListener {
 
         void onCodeInputSuccessful();
 

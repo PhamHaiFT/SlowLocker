@@ -6,16 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import com.superslow.locker.service.LockerService;
+import com.superslow.locker.service.LPLockerService;
 
-public class BootCompleteReceiver extends BroadcastReceiver {
+public class LPBootCompleteReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         //start service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LockerService.startForegroundService(context);
+            LPLockerService.startForegroundService(context);
         } else {
-            LockerService.startService(context);
+            LPLockerService.startService(context);
         }
     }
 }

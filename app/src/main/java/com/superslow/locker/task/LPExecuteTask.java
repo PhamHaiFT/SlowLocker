@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 
-public abstract class ExecuteTask implements Runnable, Serializable {
+public abstract class LPExecuteTask implements Runnable, Serializable {
 
     public static final int EXCUTE_TASK_ERROR = -1001;
     public static final int EXCUTE_TASK_RESPONSE_JSON = 10001;
@@ -35,7 +35,7 @@ public abstract class ExecuteTask implements Runnable, Serializable {
         this.md5Id = md5Id;
     }
 
-    public ExecuteTask() {
+    public LPExecuteTask() {
     }
 
     public int getUniqueID() {
@@ -92,6 +92,6 @@ public abstract class ExecuteTask implements Runnable, Serializable {
         doTask();
     }
 
-    public abstract ExecuteTask doTask();
+    public abstract LPExecuteTask doTask();
 }
 

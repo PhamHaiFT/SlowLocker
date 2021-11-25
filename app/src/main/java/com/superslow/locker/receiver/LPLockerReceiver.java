@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.superslow.locker.activity.SlowLockerActivity;
+import com.superslow.locker.activity.LPSlowLockerActivity;
 
-public class LockerReceiver extends BroadcastReceiver {
+public class LPLockerReceiver extends BroadcastReceiver {
 
-    public LockerReceiver() {
+    public LPLockerReceiver() {
     }
 
     @Override
@@ -20,7 +20,7 @@ public class LockerReceiver extends BroadcastReceiver {
                 //todo
             } else if (action.equals(Intent.ACTION_SCREEN_ON)) {
             } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
-                SlowLockerActivity.startActivity(context);
+                LPSlowLockerActivity.startActivity(context);
             }
         }
     }

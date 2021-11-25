@@ -26,23 +26,23 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.lockpad.sslockscreen.LPFLockScreenConfiguration;
+import com.lockpad.sslockscreen.LPConfiguration;
 import com.lockpad.sslockscreen.fragments.LockPadScreenFragment;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 import com.superslow.locker.R;
-import com.superslow.locker.burst.BurstParticleSystem;
-import com.superslow.locker.burst.MyTextureAtlasFactory;
-import com.superslow.locker.spark.SparkView;
-import com.superslow.locker.task.ExecuteTask;
-import com.superslow.locker.task.ExecuteTaskManager;
+import com.superslow.locker.burst.LPBurstParticleSystem;
+import com.superslow.locker.burst.LPMyTexture;
+import com.superslow.locker.spark.LPSparkView;
+import com.superslow.locker.task.LPExecuteTask;
+import com.superslow.locker.task.LPExecuteTaskManager;
 import com.superslow.locker.util.DateUtils;
 import com.superslow.locker.util.DimenUtils;
-import com.superslow.locker.util.PowerUtil;
+import com.superslow.locker.util.BatteryUtil;
 import com.superslow.locker.util.PrefManager;
 import com.superslow.locker.util.ViewUtils;
-import com.superslow.locker.widget.TouchPullDownView;
-import com.superslow.locker.widget.TouchToUnLockView;
+import com.superslow.locker.widget.LPPullDownView;
+import com.superslow.locker.widget.LPToUnLockView;
 import com.github.shchurov.particleview.ParticleView;
 import com.zyyoona7.lib.EasyPopup;
 
@@ -56,11 +56,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.annotations.NonNull;
 
-public class SlowLockerActivity extends AppCompatActivity {
+public class LPSlowLockerActivity extends AppCompatActivity{
 
-    private static final String TAG = "LockerActivity";
-    private TouchPullDownView mPullDownView;
-    private TouchToUnLockView mUnlockView;
+    private LPPullDownView mPullDownView;
+    private LPToUnLockView mUnlockView;
 
     private View mChargeContainer, mSetting;
 
@@ -77,11 +76,11 @@ public class SlowLockerActivity extends AppCompatActivity {
     private SimpleDateFormat monthFormat = new SimpleDateFormat("MMM d", Locale.getDefault());
 
     private ParticleView particleView;
-    private BurstParticleSystem particleSystem;
+    private LPBurstParticleSystem particleSystem;
     private Random random = new Random();
 
-    private SparkView spSpark;
-    private SparkTask sparkTask;
+    private LPSparkView spSpark;
+    private LPSparkTask sparkTask;
 
     private boolean passwordState;
     private boolean sparkState;
@@ -93,7 +92,7 @@ public class SlowLockerActivity extends AppCompatActivity {
     private Handler handler = new Handler();
     @BindView(R.id.tvTitle)
     ShimmerTextView tvTitle;
-    private LPFLockScreenConfiguration.Builder builder;
+    private LPConfiguration.Builder builder;
     private LockPadScreenFragment lockScreenFragment;
 
     @Override
@@ -175,7 +174,7 @@ public class SlowLockerActivity extends AppCompatActivity {
         titleState = PrefManager.getTitleState(getApplicationContext());
         titleAnimationState = PrefManager.getTitleAnimationState(getApplicationContext());
 
-        spSpark = ViewUtils.get(this, R.id.sparkView);
+        spSpark = ViewUtils.get(this,R.id.LPSparkView);
 
         if (passwordState) {
             initPassword();
@@ -219,6 +218,8 @@ public class SlowLockerActivity extends AppCompatActivity {
         } else {
             imgPreview.setBackgroundResource(R.drawable.bg_seven);
         }
+
+//        onLockScreen();
     }
 
     @Override
@@ -232,15 +233,15 @@ public class SlowLockerActivity extends AppCompatActivity {
     }
 
     private void initPassword() {
-        builder = new LPFLockScreenConfiguration.Builder(this)
-                .setMode(LPFLockScreenConfiguration.MODE_AUTH)
+        builder = new LPConfiguration.Builder(this)
+                .setMode(LPConfiguration.MODE_AUTH)
                 .setTitle("Enter pin code")
                 .setCodeLength(4);
 
         lockScreenFragment = new LockPadScreenFragment();
 
         lockScreenFragment.setEncodedPinCode(PrefManager.getPassword(getApplicationContext()));
-        lockScreenFragment.setLoginListener(new LockPadScreenFragment.OnLPLockScreenLoginListener() {
+        lockScreenFragment.setLoginListener(new LockPadScreenFragment.OnLPLoginListener() {
             @Override
             public void onCodeInputSuccessful() {
                 Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
@@ -270,7 +271,7 @@ public class SlowLockerActivity extends AppCompatActivity {
 
     private void initUnlockedView() {
         mUnlockView = ViewUtils.get(this, R.id.touchUnlockView);
-        mUnlockView.setOnTouchToUnlockListener(new TouchToUnLockView.OnTouchToUnlockListener() {
+        mUnlockView.setOnTouchToUnlockListener(new LPToUnLockView.OnTouchToUnlockListener() {
             @Override
             public void onTouchLockArea() {
                 if (mContainerView != null) {
@@ -314,7 +315,7 @@ public class SlowLockerActivity extends AppCompatActivity {
 
     //PullDown to burst particle
     private void initPullDownView() {
-        mPullDownView.setOnTouchPullDownListener(new TouchPullDownView.OnTouchPullDownListener() {
+        mPullDownView.setOnTouchPullDownListener(new LPPullDownView.OnTouchPullDownListener() {
             @Override
             public void onTouchGiftBoxArea() {
             }
@@ -350,29 +351,34 @@ public class SlowLockerActivity extends AppCompatActivity {
     }
 
     private void initSpark() {
-        sparkTask = new SparkTask();
+        sparkTask = new LPSparkTask();
     }
 
     private void initParticle() {
         particleView = ViewUtils.get(this, R.id.particleViewLocker);
-        particleSystem = new BurstParticleSystem();
-        particleView.setTextureAtlasFactory(new MyTextureAtlasFactory(getResources()));
+        particleSystem = new LPBurstParticleSystem();
+        particleView.setTextureAtlasFactory(new LPMyTexture(getResources()));
         particleView.setParticleSystem(particleSystem);
     }
 
     private void goToSetting() {
-        Intent intent = new Intent(SlowLockerActivity.this, SettingActivity.class);
+        Intent intent = new Intent(LPSlowLockerActivity.this, LPSettingActivity.class);
         startActivity(intent);
         finish();
     }
 
+    View overlayView;
     public void onLockScreen() {
+        overlayView = new View(getApplicationContext());
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        overlayView.setLayoutParams(params);
         windowManager = (WindowManager) getApplicationContext().getSystemService(WINDOW_SERVICE);
-        windowManager.addView(lockView, getLayoutParams());
+        windowManager.addView(overlayView, getLayoutParams());
+//        lockView.addView(overlayView);
     }
 
     public void unlockScreen() {
-        windowManager.removeView(lockView);
+        windowManager.removeView(overlayView);
     }
 
     public void onBackPressed() {
@@ -433,7 +439,7 @@ public class SlowLockerActivity extends AppCompatActivity {
 
 
     private void updateBatteryUI() {
-        int level = PowerUtil.getLevel(this);
+        int level = BatteryUtil.getLevel(this);
         mChargePercent.setText(level + "%");
 
         if (level <= 30) {
@@ -448,7 +454,7 @@ public class SlowLockerActivity extends AppCompatActivity {
 
         if (level < 100 && mBatteryIcon.getDrawable() instanceof Animatable) {
             Animatable animatable = (Animatable) mBatteryIcon.getDrawable();
-            if (PowerUtil.isCharging(this)) {
+            if (BatteryUtil.isCharging(this)) {
                 animatable.start();
             } else {
                 animatable.stop();
@@ -483,19 +489,19 @@ public class SlowLockerActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ExecuteTaskManager.getInstance().newExecuteTask(sparkTask);
+                    LPExecuteTaskManager.getInstance().newExecuteTask(sparkTask);
                 }
             }, 500);
         }
     }
 
-    private class SparkTask extends ExecuteTask {
+    private class LPSparkTask extends LPExecuteTask {
         @Override
-        public ExecuteTask doTask() {
+        public LPExecuteTask doTask() {
             if (sparkState) {
-                for (int i = 0; i < SparkView.WIDTH; i++) {
+                for (int i = 0; i < LPSparkView.WIDTH; i++) {
                     spSpark.setActive(true);
-                    spSpark.startSpark(i, random.nextInt(SparkView.HEIGHT));
+                    spSpark.startSpark(i, random.nextInt(LPSparkView.HEIGHT));
                     try {
                         Thread.sleep(2 + random.nextInt(8));
                     } catch (Exception e) {
@@ -513,7 +519,7 @@ public class SlowLockerActivity extends AppCompatActivity {
         super.onPause();
         mUnlockView.stopAnim();
         if (sparkState) {
-            ExecuteTaskManager.getInstance().removeExecuteTask(sparkTask);
+            LPExecuteTaskManager.getInstance().removeExecuteTask(sparkTask);
         }
 
         if (particleState) {
@@ -529,7 +535,7 @@ public class SlowLockerActivity extends AppCompatActivity {
     @NonNull
     private static Intent getIntent(Context context) {
         Intent screenIntent = new Intent();
-        screenIntent.setClass(context, SlowLockerActivity.class);
+        screenIntent.setClass(context, LPSlowLockerActivity.class);
         screenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         screenIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         screenIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
@@ -540,7 +546,10 @@ public class SlowLockerActivity extends AppCompatActivity {
         return View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_IMMERSIVE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
     }
 
     private void setLockerWindow(Window window) {
@@ -554,12 +563,28 @@ public class SlowLockerActivity extends AppCompatActivity {
         window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR);
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         window.setFormat(PixelFormat.TRANSLUCENT);
+
+//        overlayView = new View(getApplicationContext());
+//        overlayView.set
+//        WindowManager.LayoutParams params = new WindowManager.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        overlayView.setLayoutParams(params);
+//        windowManager = (WindowManager) getApplicationContext().getSystemService(WINDOW_SERVICE);
+//        windowManager.addView(overlayView, getLayoutParams());
     }
 
     private WindowManager.LayoutParams getLayoutParams() {
+        int layoutParams;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            layoutParams = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            layoutParams = WindowManager.LayoutParams.TYPE_PHONE;
+        }
         return new WindowManager.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT,
-                0, 0, WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
+                0, 0, layoutParams,
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY|
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD, PixelFormat.TRANSLUCENT);
     }
 }
